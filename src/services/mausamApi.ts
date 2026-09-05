@@ -77,7 +77,7 @@ export const mausamApi = {
   /** GET /weather/current */
   getCurrentWeather: async (locationId = defaultLocationId): Promise<CurrentWeather> => {
     await latency();
-    return clone(currentWeather[locationId] ?? currentWeather[defaultLocationId]);
+    return clone(currentWeather[locationId] ?? currentWeather[defaultLocationId]!);
   },
 
   /** GET /weather/forecast */
@@ -131,9 +131,9 @@ export const mausamApi = {
 
   getInitialChat: (): ChatMessage[] => clone(initialChat),
 
-  getSuggestedPrompts: (mode: UserMode): string[] => clone(suggestedPrompts[mode]),
+  getSuggestedPrompts: (mode: UserMode): string[] => clone(suggestedPrompts[mode]!),
 
-  getSampleUtterances: (language: Language): string[] => clone(voiceSampleUtterances[language]),
+  getSampleUtterances: (language: Language): string[] => clone(voiceSampleUtterances[language]!),
 
   /** POST /chat — grounded advisory answer */
   postChat: async (req: ChatRequest): Promise<ChatMessage> => {
@@ -159,9 +159,9 @@ export const mausamApi = {
   /** POST /voice/transcribe — mock ASR for the prototype */
   transcribeVoice: async (language: Language): Promise<TranscriptionResult> => {
     await latency(1100);
-    const samples = voiceSampleUtterances[language];
+    const samples = voiceSampleUtterances[language]!;
     return {
-      text: samples[Math.floor(Math.random() * samples.length)],
+      text: samples[Math.floor(Math.random() * samples.length)]!,
       language,
       confidence: 0.91,
       durationMs: 2400,

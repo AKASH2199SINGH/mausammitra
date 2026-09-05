@@ -56,7 +56,7 @@ export const defaultLocationId = "loc-patna";
 
 export const currentWeather: Record<string, CurrentWeather> = {
   "loc-patna": {
-    location: locations[0],
+    location: locations[0]!,
     observedAt: iso(-12),
     condition: "Heavy rain, overcast",
     temperatureC: 29.4,
@@ -77,7 +77,7 @@ export const currentWeather: Record<string, CurrentWeather> = {
     },
   },
   "loc-guwahati": {
-    location: locations[1],
+    location: locations[1]!,
     observedAt: iso(-9),
     condition: "Intermittent showers",
     temperatureC: 27.8,
@@ -97,7 +97,7 @@ export const currentWeather: Record<string, CurrentWeather> = {
     },
   },
   "loc-nagpur": {
-    location: locations[2],
+    location: locations[2]!,
     observedAt: iso(-15),
     condition: "Clear, dry heat",
     temperatureC: 41.6,
@@ -117,7 +117,7 @@ export const currentWeather: Record<string, CurrentWeather> = {
     },
   },
   "loc-puri": {
-    location: locations[3],
+    location: locations[3]!,
     observedAt: iso(-6),
     condition: "Squally winds, rough sea",
     temperatureC: 28.1,
@@ -163,7 +163,7 @@ export const forecasts: Record<string, WeatherForecast> = {
 };
 
 const fallbackForecast = (locationId: string): WeatherForecast => ({
-  ...forecasts["loc-patna"],
+  ...forecasts["loc-patna"]!,
   locationId,
 });
 
@@ -322,7 +322,7 @@ export const riskSnapshots: Record<string, RiskSnapshot> = {
 };
 
 const fallbackSnapshot = (locationId: string): RiskSnapshot => ({
-  ...riskSnapshots["loc-patna"],
+  ...riskSnapshots["loc-patna"]!,
   locationId,
 });
 
