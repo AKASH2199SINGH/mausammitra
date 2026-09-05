@@ -8,6 +8,7 @@ import type {
   ChatMessage,
   CurrentWeather,
   HazardAlert,
+  Language,
   LocationRef,
   RiskSnapshot,
   RiskZone,
