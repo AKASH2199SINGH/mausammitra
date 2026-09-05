@@ -110,9 +110,9 @@ export function AlertsFeed({
   limit,
   title = "Recent alerts",
 }: {
-  alerts?: HazardAlert[];
-  limit?: number;
-  title?: string;
+  alerts?: HazardAlert[] | undefined;
+  limit?: number | undefined;
+  title?: string | undefined;
 }) {
   if (!alerts) {
     return (

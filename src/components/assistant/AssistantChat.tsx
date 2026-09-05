@@ -164,7 +164,7 @@ function AssistantBubble({
   officialHeadline,
 }: {
   message: ChatMessage;
-  officialHeadline?: string;
+  officialHeadline?: string | undefined;
 }) {
   return (
     <div className="panel-sunken px-3.5 py-3">
