@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AlertsRouteImport } from './routes/alerts'
 import { Route as AssistantRouteImport } from './routes/assistant'
+import { Route as AuthorityRouteImport } from './routes/authority'
 import { Route as RiskMapRouteImport } from './routes/risk-map'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +30,11 @@ const AssistantRoute = AssistantRouteImport.update({
   path: '/assistant',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthorityRoute = AuthorityRouteImport.update({
+  id: '/authority',
+  path: '/authority',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RiskMapRoute = RiskMapRouteImport.update({
   id: '/risk-map',
   path: '/risk-map',
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/alerts': typeof AlertsRoute
   '/assistant': typeof AssistantRoute
+  '/authority': typeof AuthorityRoute
   '/risk-map': typeof RiskMapRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/alerts': typeof AlertsRoute
   '/assistant': typeof AssistantRoute
+  '/authority': typeof AuthorityRoute
   '/risk-map': typeof RiskMapRoute
 }
 export interface FileRoutesById {
@@ -52,20 +60,22 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/alerts': typeof AlertsRoute
   '/assistant': typeof AssistantRoute
+  '/authority': typeof AuthorityRoute
   '/risk-map': typeof RiskMapRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/alerts' | '/assistant' | '/risk-map'
+  fullPaths: '/' | '/alerts' | '/assistant' | '/authority' | '/risk-map'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/alerts' | '/assistant' | '/risk-map'
-  id: '__root__' | '/' | '/alerts' | '/assistant' | '/risk-map'
+  to: '/' | '/alerts' | '/assistant' | '/authority' | '/risk-map'
+  id: '__root__' | '/' | '/alerts' | '/assistant' | '/authority' | '/risk-map'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AlertsRoute: typeof AlertsRoute
   AssistantRoute: typeof AssistantRoute
+  AuthorityRoute: typeof AuthorityRoute
   RiskMapRoute: typeof RiskMapRoute
 }
 
@@ -92,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AssistantRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/authority': {
+      id: '/authority'
+      path: '/authority'
+      fullPath: '/authority'
+      preLoaderRoute: typeof AuthorityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/risk-map': {
       id: '/risk-map'
       path: '/risk-map'
@@ -106,6 +123,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AlertsRoute: AlertsRoute,
   AssistantRoute: AssistantRoute,
+  AuthorityRoute: AuthorityRoute,
   RiskMapRoute: RiskMapRoute,
 }
 export const routeTree = rootRouteImport
