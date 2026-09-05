@@ -17,7 +17,7 @@ const priorityVar: Record<AdvisoryItem["priority"], string> = {
   routine: "var(--risk-low)",
 };
 
-export function AdvisoryPanel({ advisory }: { advisory?: Advisory }) {
+export function AdvisoryPanel({ advisory }: { advisory?: Advisory | undefined }) {
   if (!advisory) {
     return (
       <Panel className="p-4">

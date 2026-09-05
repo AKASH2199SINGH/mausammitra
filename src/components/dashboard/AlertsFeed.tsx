@@ -66,7 +66,7 @@ export function AlertRow({ alert, dense }: { alert: HazardAlert; dense?: boolean
   );
 }
 
-export function OfficialWarningBanner({ alert }: { alert?: HazardAlert }) {
+export function OfficialWarningBanner({ alert }: { alert?: HazardAlert | undefined }) {
   if (!alert) return null;
   return (
     <div

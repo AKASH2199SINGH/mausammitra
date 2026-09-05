@@ -3,7 +3,7 @@ import { Metric, Panel, PanelHeader, ProvenanceStrip, SkeletonBlock } from "@/co
 import { formatDateTime, relativeTime } from "@/lib/format";
 import type { CurrentWeather } from "@/types/mausam";
 
-export function WeatherOverview({ data }: { data?: CurrentWeather }) {
+export function WeatherOverview({ data }: { data?: CurrentWeather | undefined }) {
   if (!data) {
     return (
       <Panel className="p-4">

@@ -12,7 +12,7 @@ import {
 import { compactNumber } from "@/lib/format";
 import type { AuthorityMetrics } from "@/types/mausam";
 
-export function AuthorityConsole({ metrics }: { metrics?: AuthorityMetrics }) {
+export function AuthorityConsole({ metrics }: { metrics?: AuthorityMetrics | undefined }) {
   if (!metrics) {
     return (
       <Panel className="p-4">
