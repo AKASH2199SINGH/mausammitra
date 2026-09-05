@@ -100,7 +100,7 @@ function HazardCard({ risk }: { risk: HazardRisk }) {
   );
 }
 
-export function HazardStatus({ snapshot }: { snapshot?: RiskSnapshot }) {
+export function HazardStatus({ snapshot }: { snapshot?: RiskSnapshot | undefined }) {
   if (!snapshot) {
     return (
       <Panel className="p-4">

@@ -8,7 +8,7 @@ import {
 } from "@/components/common/primitives";
 import type { WeatherForecast } from "@/types/mausam";
 
-export function ForecastTimeline({ forecast }: { forecast?: WeatherForecast }) {
+export function ForecastTimeline({ forecast }: { forecast?: WeatherForecast | undefined }) {
   if (!forecast) {
     return (
       <Panel className="p-4">

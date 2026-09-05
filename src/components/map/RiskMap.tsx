@@ -34,9 +34,9 @@ export function RiskMap({
   className,
   height = "clamp(360px, 58vh, 620px)",
 }: {
-  zones?: RiskZone[];
-  className?: string;
-  height?: string;
+  zones?: RiskZone[] | undefined;
+  className?: string | undefined;
+  height?: string | undefined;
 }) {
   const [active, setActive] = useState<Set<ZoneLayer>>(
     new Set<ZoneLayer>(["rainfall", "flood", "heat", "storm", "warning", "emergency"]),
