@@ -17,10 +17,11 @@ import { formatDateTime, formatTime } from "@/lib/format";
 import type { ChatMessage } from "@/types/mausam";
 
 export function AssistantChat({ className }: { className?: string }) {
-  const { mode, language, locationId, openVoice } = useAppState();
-  const [messages, setMessages] = useState<ChatMessage[]>(() => mausamApi.getInitialChat());
+  const { mode, language, locationId, chatMessages, setChatMessages, openVoice } = useAppState();
+  const messages = chatMessages;
   const [input, setInput] = useState("");
   const [pending, setPending] = useState(false);
+  const [sendError, setSendError] = useState<string | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -29,9 +30,31 @@ export function AssistantChat({ className }: { className?: string }) {
     queryFn: () => mausamApi.getAlerts(locationId),
   });
 
+  const { data: locations, status: locationsStatus } = useQuery({
+    queryKey: queryKeys.locations(),
+    queryFn: mausamApi.listLocations,
+  });
+
+  // Greet once the location catalogue is known so the opener names the place the
+  // user actually selected. Waiting for the query to settle (not just succeed)
+  // means the assistant still greets when the backend is down.
+  //
+  // The guard must be the transcript itself, not a local ref: this component
+  // unmounts on route change, and a ref resets with it, so the seeder used to
+  // run again on every return to /assistant and wipe the shared conversation.
+  useEffect(() => {
+    if (locationsStatus === "pending" || messages.length > 0) return;
+    const label = locations?.find((l) => l.id === locationId)?.name;
+    setChatMessages(mausamApi.getInitialChat(label));
+  }, [locationsStatus, locations, locationId, messages.length, setChatMessages]);
+
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages, pending]);
+
+  const setMessages = (update: ChatMessage[] | ((prev: ChatMessage[]) => ChatMessage[])) => {
+    setChatMessages((prev) => (typeof update === "function" ? update(prev) : update));
+  };
 
   const send = async (text: string) => {
     const trimmed = text.trim();
@@ -50,6 +73,13 @@ export function AssistantChat({ className }: { className?: string }) {
     try {
       const reply = await mausamApi.postChat({ message: trimmed, mode, language, locationId });
       setMessages((prev) => [...prev, reply]);
+      setSendError(null);
+    } catch (cause) {
+      // Without this the rejection escaped the handler, leaving the user's message
+      // on screen with no reply and no explanation.
+      setSendError(
+        cause instanceof Error ? cause.message : "The assistant is unreachable right now.",
+      );
     } finally {
       setPending(false);
       inputRef.current?.focus();
@@ -102,6 +132,15 @@ export function AssistantChat({ className }: { className?: string }) {
             <span className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
               Reading IMD + CWC feeds
             </span>
+          </div>
+        ) : null}
+
+        {sendError ? (
+          <div
+            role="alert"
+            className="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-xs text-destructive"
+          >
+            Reply failed — {sendError}
           </div>
         ) : null}
         <div ref={endRef} />

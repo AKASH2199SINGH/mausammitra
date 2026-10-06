@@ -13,7 +13,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AppStateProvider } from "@/context/AppStateContext";
 import { AppShell } from "@/components/layout/AppShell";
-
+import { ApiNotifications } from "@/components/common/ApiNotifications";
 
 function NotFoundComponent() {
   return (
@@ -127,6 +127,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ApiNotifications />
       <AppStateProvider>
         <AppShell>
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
@@ -136,4 +137,3 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
-

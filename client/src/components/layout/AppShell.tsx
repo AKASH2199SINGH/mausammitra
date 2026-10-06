@@ -92,17 +92,14 @@ export function AppShell({ children }: { children: ReactNode }) {
         <nav className="mx-auto max-w-[1600px] overflow-x-auto px-4 lg:px-6">
           <ul className="flex min-w-max items-center gap-1">
             {nav.map((item) => {
-              const active =
-                item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
+              const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
               return (
                 <li key={item.to}>
                   <Link
                     to={item.to}
                     className={cn(
                       "focus-ring relative block px-3 py-2.5 font-mono text-[11px] uppercase tracking-[0.14em] transition-colors",
-                      active
-                        ? "text-foreground"
-                        : "text-muted-foreground hover:text-foreground",
+                      active ? "text-foreground" : "text-muted-foreground hover:text-foreground",
                     )}
                   >
                     {item.label}
@@ -134,7 +131,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           IMD · CWC · INCOIS · NDMA feeds, fused by MausamMitra risk models
         </span>
         <span className="ml-auto font-mono text-[11px] text-muted-foreground">
-          Live stream {liveAt ? relativeTime(liveAt) : "connected"}
+          Live stream {liveAt ? relativeTime(liveAt) : "connecting…"}
           {status?.offlineCacheReady ? " · offline cache ready" : ""}
         </span>
       </footer>

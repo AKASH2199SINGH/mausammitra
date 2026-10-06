@@ -39,17 +39,17 @@ export function AuthorityConsole({ metrics }: { metrics?: AuthorityMetrics | und
         <div className="grid gap-2 p-4 sm:grid-cols-3 xl:grid-cols-6">
           <Metric label="Active warnings" value={metrics.activeWarnings} accent="var(--official)" />
           <Metric label="High-risk zones" value={metrics.highRiskZones} accent="var(--risk-high)" />
-          <Metric label="Critical zones" value={metrics.criticalZones} accent="var(--risk-severe)" />
+          <Metric
+            label="Critical zones"
+            value={metrics.criticalZones}
+            accent="var(--risk-severe)"
+          />
           <Metric
             label="Affected people"
             value={compactNumber(metrics.affectedPopulation)}
             sub="estimated exposure"
           />
-          <Metric
-            label="Affected area"
-            value={compactNumber(metrics.affectedAreaKm2)}
-            unit="km²"
-          />
+          <Metric label="Affected area" value={compactNumber(metrics.affectedAreaKm2)} unit="km²" />
           <Metric label="Teams" value={metrics.responseTeamsDeployed} sub="NDRF / SDRF / ODRAF" />
         </div>
       </Panel>
@@ -113,9 +113,7 @@ export function AuthorityConsole({ metrics }: { metrics?: AuthorityMetrics | und
                 style={{ borderLeft: `2px solid ${riskVar[loc.level]}` }}
               >
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-[10px] text-muted-foreground">
-                    P{i + 1}
-                  </span>
+                  <span className="font-mono text-[10px] text-muted-foreground">P{i + 1}</span>
                   <RiskChip level={loc.level} />
                   <span
                     className="font-mono text-[10px] uppercase tracking-widest"

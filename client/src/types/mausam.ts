@@ -111,13 +111,7 @@ export interface RiskSnapshot {
   updatedAt: string;
 }
 
-export type ZoneLayer =
-  | "rainfall"
-  | "flood"
-  | "heat"
-  | "storm"
-  | "warning"
-  | "emergency";
+export type ZoneLayer = "rainfall" | "flood" | "heat" | "storm" | "warning" | "emergency";
 
 export interface RiskZone {
   id: string;

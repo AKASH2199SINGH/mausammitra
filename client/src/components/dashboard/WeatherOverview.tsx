@@ -1,5 +1,11 @@
 import { CloudRain, Droplets, Gauge, Eye, Thermometer, Wind } from "lucide-react";
-import { Metric, Panel, PanelHeader, ProvenanceStrip, SkeletonBlock } from "@/components/common/primitives";
+import {
+  Metric,
+  Panel,
+  PanelHeader,
+  ProvenanceStrip,
+  SkeletonBlock,
+} from "@/components/common/primitives";
 import { formatDateTime, relativeTime } from "@/lib/format";
 import type { CurrentWeather } from "@/types/mausam";
 
@@ -38,7 +44,8 @@ export function WeatherOverview({ data }: { data?: CurrentWeather | undefined })
               {data.condition}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
-              Feels like {data.feelsLikeC.toFixed(1)} °C · observed {formatDateTime(data.observedAt)}
+              Feels like {data.feelsLikeC.toFixed(1)} °C · observed{" "}
+              {formatDateTime(data.observedAt)}
             </p>
           </div>
         </div>
@@ -58,7 +65,10 @@ export function WeatherOverview({ data }: { data?: CurrentWeather | undefined })
           { icon: Thermometer, text: `Heat index ${data.feelsLikeC.toFixed(1)} °C` },
           { icon: Droplets, text: `Dew point high, saturation ${data.humidityPct}%` },
           { icon: Wind, text: `Gust potential ${Math.round(data.windKph * 1.6)} kmph` },
-          { icon: Gauge, text: `Pressure tendency ${data.pressureHpa < 1000 ? "falling" : "steady"}` },
+          {
+            icon: Gauge,
+            text: `Pressure tendency ${data.pressureHpa < 1000 ? "falling" : "steady"}`,
+          },
           { icon: Eye, text: `Visibility ${data.visibilityKm} km` },
         ].map(({ icon: Icon, text }) => (
           <span key={text} className="flex items-center gap-1.5 text-[11px] text-muted-foreground">

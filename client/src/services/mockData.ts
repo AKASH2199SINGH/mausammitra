@@ -17,7 +17,9 @@ import type {
   WeatherForecast,
 } from "@/types/mausam";
 
-const now = new Date("2026-09-02T13:10:00+05:30");
+// Fallback data is generated against "now" so that when the API is unreachable the
+// UI still shows plausible recent timestamps instead of a frozen prototype date.
+const now = new Date();
 
 const iso = (minutesOffset: number) =>
   new Date(now.getTime() + minutesOffset * 60_000).toISOString();
@@ -53,7 +55,7 @@ export const locations: LocationRef[] = [
   },
 ];
 
-export const defaultLocationId = "loc-patna";
+export const defaultLocationId = "loc-bihar";
 
 export const currentWeather: Record<string, CurrentWeather> = {
   "loc-patna": {
@@ -151,14 +153,94 @@ export const forecasts: Record<string, WeatherForecast> = {
       model: "hyperlocal-lstm v0.6",
     },
     slots: [
-      { time: iso(0), label: "Now", temperatureC: 29.4, rainfallMm: 18.6, rainChancePct: 96, windKph: 32, condition: "Heavy rain", dominantRisk: "flood", riskLevel: "high" },
-      { time: iso(180), label: "16:00", temperatureC: 28.6, rainfallMm: 22.4, rainChancePct: 92, windKph: 38, condition: "Heavy rain", dominantRisk: "flood", riskLevel: "severe" },
-      { time: iso(360), label: "19:00", temperatureC: 27.5, rainfallMm: 14.1, rainChancePct: 78, windKph: 30, condition: "Rain, gusty", dominantRisk: "storm", riskLevel: "high" },
-      { time: iso(540), label: "22:00", temperatureC: 26.8, rainfallMm: 6.2, rainChancePct: 54, windKph: 22, condition: "Light rain", dominantRisk: "flood", riskLevel: "moderate" },
-      { time: iso(720), label: "01:00", temperatureC: 26.1, rainfallMm: 2.4, rainChancePct: 38, windKph: 16, condition: "Cloudy", dominantRisk: null, riskLevel: "moderate" },
-      { time: iso(900), label: "04:00", temperatureC: 25.7, rainfallMm: 0.8, rainChancePct: 24, windKph: 12, condition: "Cloudy", dominantRisk: null, riskLevel: "low" },
-      { time: iso(1080), label: "07:00", temperatureC: 27.2, rainfallMm: 0.4, rainChancePct: 18, windKph: 14, condition: "Partly cloudy", dominantRisk: null, riskLevel: "low" },
-      { time: iso(1260), label: "10:00", temperatureC: 30.4, rainfallMm: 1.2, rainChancePct: 30, windKph: 18, condition: "Humid, cloudy", dominantRisk: "heat", riskLevel: "moderate" },
+      {
+        time: iso(0),
+        label: "Now",
+        temperatureC: 29.4,
+        rainfallMm: 18.6,
+        rainChancePct: 96,
+        windKph: 32,
+        condition: "Heavy rain",
+        dominantRisk: "flood",
+        riskLevel: "high",
+      },
+      {
+        time: iso(180),
+        label: "16:00",
+        temperatureC: 28.6,
+        rainfallMm: 22.4,
+        rainChancePct: 92,
+        windKph: 38,
+        condition: "Heavy rain",
+        dominantRisk: "flood",
+        riskLevel: "severe",
+      },
+      {
+        time: iso(360),
+        label: "19:00",
+        temperatureC: 27.5,
+        rainfallMm: 14.1,
+        rainChancePct: 78,
+        windKph: 30,
+        condition: "Rain, gusty",
+        dominantRisk: "storm",
+        riskLevel: "high",
+      },
+      {
+        time: iso(540),
+        label: "22:00",
+        temperatureC: 26.8,
+        rainfallMm: 6.2,
+        rainChancePct: 54,
+        windKph: 22,
+        condition: "Light rain",
+        dominantRisk: "flood",
+        riskLevel: "moderate",
+      },
+      {
+        time: iso(720),
+        label: "01:00",
+        temperatureC: 26.1,
+        rainfallMm: 2.4,
+        rainChancePct: 38,
+        windKph: 16,
+        condition: "Cloudy",
+        dominantRisk: null,
+        riskLevel: "moderate",
+      },
+      {
+        time: iso(900),
+        label: "04:00",
+        temperatureC: 25.7,
+        rainfallMm: 0.8,
+        rainChancePct: 24,
+        windKph: 12,
+        condition: "Cloudy",
+        dominantRisk: null,
+        riskLevel: "low",
+      },
+      {
+        time: iso(1080),
+        label: "07:00",
+        temperatureC: 27.2,
+        rainfallMm: 0.4,
+        rainChancePct: 18,
+        windKph: 14,
+        condition: "Partly cloudy",
+        dominantRisk: null,
+        riskLevel: "low",
+      },
+      {
+        time: iso(1260),
+        label: "10:00",
+        temperatureC: 30.4,
+        rainfallMm: 1.2,
+        rainChancePct: 30,
+        windKph: 18,
+        condition: "Humid, cloudy",
+        dominantRisk: "heat",
+        riskLevel: "moderate",
+      },
     ],
   },
 };
@@ -307,10 +389,7 @@ export const riskSnapshots: Record<string, RiskSnapshot> = {
           { label: "Heat index", value: "34.1 °C", weight: 0.35 },
           { label: "Night-time minimum", value: "25.7 °C", weight: 0.25 },
         ],
-        recommendedActions: [
-          "Maintain normal hydration",
-          "No heat-specific restriction in force",
-        ],
+        recommendedActions: ["Maintain normal hydration", "No heat-specific restriction in force"],
         provenance: {
           source: "IMD AWS Patna",
           issuedAt: iso(-8),
@@ -630,7 +709,8 @@ export const advisories: Record<UserMode, Advisory> = {
         id: "adv-f2",
         priority: "high",
         title: "Open field bunds by 10–15 cm to control submergence",
-        detail: "Paddy tolerates 5–10 cm standing water; beyond 3 days of deep submergence yield loss rises sharply.",
+        detail:
+          "Paddy tolerates 5–10 cm standing water; beyond 3 days of deep submergence yield loss rises sharply.",
         window: "Before 16:00 IST today",
         hazard: "flood",
       },
@@ -638,7 +718,8 @@ export const advisories: Record<UserMode, Advisory> = {
         id: "adv-f3",
         priority: "high",
         title: "Postpone spraying and fertilizer top-dressing",
-        detail: "Wash-off risk is near total with 92% rain probability. Resume once 24 h rainfall drops below 5 mm.",
+        detail:
+          "Wash-off risk is near total with 92% rain probability. Resume once 24 h rainfall drops below 5 mm.",
         window: "Until 04 Sep",
         hazard: null,
       },
@@ -766,7 +847,11 @@ export const systemStatus: SystemStatus = {
     { name: "IMD ingest", health: "online", detail: "AWS + radar mosaic, 3-min cadence" },
     { name: "CWC gauge feed", health: "online", detail: "12 stations, 15-min cadence" },
     { name: "Risk inference (ML)", health: "online", detail: "flood-risk-gbm v0.8" },
-    { name: "LLM advisory", health: "degraded", detail: "Elevated latency, fallback templates active" },
+    {
+      name: "LLM advisory",
+      health: "degraded",
+      detail: "Elevated latency, fallback templates active",
+    },
     { name: "Voice (ASR/TTS)", health: "online", detail: "hi-IN / en-IN" },
     { name: "Live socket", health: "online", detail: "WS /live, 41 subscribers" },
   ],
@@ -793,21 +878,24 @@ export const suggestedPrompts: Record<UserMode, string[]> = {
   ],
 };
 
-export const initialChat: ChatMessage[] = [
-  {
-    id: "msg-seed",
-    role: "assistant",
-    text: "Namaste. I am MausamMitra. I read IMD and CWC feeds for Kurji, Patna and explain what they mean for you. Ask me in Hindi or English, by text or voice.",
-    createdAt: iso(-3),
-    provenance: {
-      source: "MausamMitra advisory engine",
-      issuedAt: iso(-3),
-      validUntil: iso(240),
-      confidence: 0.9,
-      model: "advisory-llm v0.5",
+export const buildInitialChat = (locationLabel = "your selected area"): ChatMessage[] => {
+  const at = new Date().toISOString();
+  return [
+    {
+      id: "msg-seed",
+      role: "assistant",
+      text: `Namaste. I am MausamMitra. I read IMD and CWC feeds for ${locationLabel} and explain what they mean for you. Ask me in Hindi or English, by text or voice.`,
+      createdAt: at,
+      provenance: {
+        source: "MausamMitra advisory engine",
+        issuedAt: at,
+        validUntil: new Date(Date.now() + 240 * 60_000).toISOString(),
+        confidence: 0.9,
+        model: "advisory-llm v0.5",
+      },
     },
-  },
-];
+  ];
+};
 
 interface AnswerTemplate {
   match: RegExp;

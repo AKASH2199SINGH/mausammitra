@@ -27,6 +27,7 @@ export function VoiceConsole() {
   const [state, setState] = useState<VoiceState>("idle");
   const [transcript, setTranscript] = useState<string | null>(null);
   const [reply, setReply] = useState<ChatMessage | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const timers = useRef<Array<ReturnType<typeof setTimeout>>>([]);
 
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
@@ -35,20 +36,30 @@ export function VoiceConsole() {
     if (state === "listening" || state === "processing") return;
     setTranscript(null);
     setReply(null);
+    setError(null);
     setState("listening");
     timers.current.push(
       setTimeout(async () => {
         setState("processing");
-        const asr = await mausamApi.transcribeVoice(language);
-        setTranscript(asr.text);
-        const answer = await mausamApi.postChat({
-          message: asr.text,
-          mode,
-          language,
-          locationId,
-        });
-        setReply(answer);
-        setState("response");
+        try {
+          const asr = await mausamApi.transcribeVoice(language);
+          setTranscript(asr.text);
+          const answer = await mausamApi.postChat({
+            message: asr.text,
+            mode,
+            language,
+            locationId,
+          });
+          setReply(answer);
+          setState("response");
+        } catch (cause) {
+          // Previously the rejection escaped, so the console sat on "Processing…"
+          // forever with no way to recover.
+          setError(
+            cause instanceof Error ? cause.message : "Voice request failed, please try again.",
+          );
+          setState("idle");
+        }
       }, 2200),
     );
   };
@@ -58,7 +69,7 @@ export function VoiceConsole() {
       <Panel raised className="w-full max-w-xl overflow-hidden">
         <PanelHeader
           title="Voice assistant"
-          sub="Mock ASR + TTS pipeline for the prototype · POST /voice/transcribe"
+          sub="Server-side ASR + grounded reply · POST /voice/transcribe"
           right={
             <button
               type="button"
@@ -123,6 +134,15 @@ export function VoiceConsole() {
 
           <p className="font-display text-lg font-semibold">{stateCopy[state].label}</p>
           <p className="text-xs text-muted-foreground">{stateCopy[state].hint}</p>
+
+          {error ? (
+            <p
+              role="alert"
+              className="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-1.5 text-xs text-destructive"
+            >
+              {error}
+            </p>
+          ) : null}
 
           <div className="flex w-full items-center gap-1.5">
             {(["listening", "processing", "response"] as VoiceState[]).map((s, i) => {

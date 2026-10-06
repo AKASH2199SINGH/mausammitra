@@ -1,4 +1,4 @@
-import { AlertTriangle, BellRing } from "lucide-react";
+import { AlertTriangle, BellRing, CheckCircle2 } from "lucide-react";
 import {
   ConfidenceMeter,
   KindTag,
@@ -131,9 +131,23 @@ export function AlertsFeed({
         right={<BellRing className="h-4 w-4 text-muted-foreground" strokeWidth={1.7} />}
       />
       <div className="space-y-2.5 p-4">
-        {list.map((a) => (
-          <AlertRow key={a.id} alert={a} dense={Boolean(limit)} />
-        ))}
+        {list.length === 0 ? (
+          // The feed is filtered by location, so most districts are legitimately
+          // quiet. Without this the panel rendered a count of "0 in force" over a
+          // blank body, which reads as a broken widget rather than an all-clear.
+          <div className="panel-sunken flex items-start gap-3 px-3.5 py-4">
+            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent" strokeWidth={1.7} />
+            <div className="space-y-1">
+              <p className="text-sm font-medium">No active alerts for this area</p>
+              <p className="text-xs text-muted-foreground">
+                Official warnings and MausamMitra advisories appear here as soon as one covers your
+                district.
+              </p>
+            </div>
+          </div>
+        ) : (
+          list.map((a) => <AlertRow key={a.id} alert={a} dense={Boolean(limit)} />)
+        )}
       </div>
     </Panel>
   );

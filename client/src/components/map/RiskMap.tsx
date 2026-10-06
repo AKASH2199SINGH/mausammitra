@@ -26,8 +26,7 @@ const layerMeta: Array<{ id: ZoneLayer; label: string; color: string }> = [
 const layerColor = (layer: ZoneLayer) =>
   layerMeta.find((l) => l.id === layer)?.color ?? "var(--primary)";
 
-const points = (polygon: Array<[number, number]>) =>
-  polygon.map(([x, y]) => `${x},${y}`).join(" ");
+const points = (polygon: Array<[number, number]>) => polygon.map(([x, y]) => `${x},${y}`).join(" ");
 
 export function RiskMap({
   zones,
@@ -43,10 +42,7 @@ export function RiskMap({
   );
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const visible = useMemo(
-    () => (zones ?? []).filter((z) => active.has(z.layer)),
-    [zones, active],
-  );
+  const visible = useMemo(() => (zones ?? []).filter((z) => active.has(z.layer)), [zones, active]);
   const selected = visible.find((z) => z.id === selectedId) ?? null;
 
   const toggle = (layer: ZoneLayer) =>
@@ -88,7 +84,9 @@ export function RiskMap({
               aria-pressed={on}
               className={cn(
                 "focus-ring flex items-center gap-1.5 rounded-sm border px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.12em] transition-all",
-                on ? "text-foreground" : "border-border text-muted-foreground hover:text-foreground",
+                on
+                  ? "text-foreground"
+                  : "border-border text-muted-foreground hover:text-foreground",
               )}
               style={
                 on
@@ -118,12 +116,7 @@ export function RiskMap({
           <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="h-full w-full">
             <defs>
               <pattern id="mm-grid" width="5" height="5" patternUnits="userSpaceOnUse">
-                <path
-                  d="M5 0 L0 0 0 5"
-                  fill="none"
-                  stroke="var(--grid)"
-                  strokeWidth="0.15"
-                />
+                <path d="M5 0 L0 0 0 5" fill="none" stroke="var(--grid)" strokeWidth="0.15" />
               </pattern>
               <pattern
                 id="mm-rain"

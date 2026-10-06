@@ -179,10 +179,7 @@ const healthVar: Record<ServiceHealth, string> = {
 export function HealthDot({ health, pulse }: { health: ServiceHealth; pulse?: boolean }) {
   return (
     <span className="relative inline-flex h-2 w-2 shrink-0" aria-hidden>
-      <span
-        className="absolute inset-0 rounded-full"
-        style={{ background: healthVar[health] }}
-      />
+      <span className="absolute inset-0 rounded-full" style={{ background: healthVar[health] }} />
       {pulse ? (
         <span
           className="animate-pulse-ring absolute inset-0 rounded-full"
